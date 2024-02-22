@@ -1,0 +1,193 @@
+definitions:
+  contract.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  contract.RegisterInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  contract.TaskInput:
+    properties:
+      date_of_birth:
+        type: string
+      full_name:
+        type: string
+      ktp_image:
+        type: string
+      legal_name:
+        type: string
+      nik:
+        type: string
+      place_of_birth:
+        type: string
+      salary:
+        type: number
+      selfie_image:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - date_of_birth
+    - full_name
+    - ktp_image
+    - legal_name
+    - nik
+    - place_of_birth
+    - salary
+    - selfie_image
+    type: object
+  contract.TaskOutput:
+    properties:
+      date_of_birth:
+        type: string
+      full_name:
+        type: string
+      ktp_image:
+        type: string
+      legal_name:
+        type: string
+      nik:
+        type: string
+      place_of_birth:
+        type: string
+      salary:
+        type: number
+      selfie_image:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - date_of_birth
+    - full_name
+    - ktp_image
+    - legal_name
+    - nik
+    - place_of_birth
+    - salary
+    - selfie_image
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a Task test.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: User Task
+  version: "1.0"
+paths:
+  /task-test/login:
+    post:
+      description: Logging in to get jwt token to access admin or user api by roles.
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login.
+      tags:
+      - User
+  /task-test/tasks:
+    post:
+      description: Save User Task.
+      parameters:
+      - description: the body to create a new Task
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.TaskInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.TaskOutput'
+      security:
+      - task-token: []
+      summary: Create Task.
+      tags:
+      - Task
+  /task-test/users:
+    get:
+      description: get list user from public access.
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Get List User.
+      tags:
+      - User
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a User.
+      tags:
+      - User
+securityDefinitions:
+  task-token:
+    description: 'Value is: "Bearer {access_token}", where access_token is retrieved
+      from cms-service/v1/login'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
