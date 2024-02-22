@@ -48,6 +48,16 @@ definitions:
       user_id:
         type: integer
     type: object
+  contract.UpdateInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    required:
+    - email
+    - name
+    type: object
 info:
   contact:
     email: support@swagger.io
@@ -83,6 +93,30 @@ paths:
       tags:
       - User
   /task-test/tasks:
+    get:
+      description: get list task.
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Get List Task.
+      tags:
+      - Task
     post:
       description: Save User Task.
       parameters:
@@ -102,6 +136,75 @@ paths:
       security:
       - task-token: []
       summary: Create Task.
+      tags:
+      - Task
+  /task-test/tasks/{id}:
+    delete:
+      description: remove a task.
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Delete a Task.
+      tags:
+      - Task
+    get:
+      description: get a task.
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Get a Task.
+      tags:
+      - Task
+    put:
+      description: Edit User Task.
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to create a new Task
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.TaskInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contract.TaskOutput'
+      security:
+      - task-token: []
+      summary: Update Task.
       tags:
       - Task
   /task-test/users:
@@ -150,6 +253,27 @@ paths:
       tags:
       - User
   /task-test/users/{id}:
+    delete:
+      description: remove a task.
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Delete a User.
+      tags:
+      - User
     get:
       description: get a user from public access.
       parameters:
@@ -169,6 +293,33 @@ paths:
       security:
       - task-token: []
       summary: Get  User.
+      tags:
+      - User
+    put:
+      description: Edit User User.
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to create a new User
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/contract.UpdateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Update User.
       tags:
       - User
 securityDefinitions:

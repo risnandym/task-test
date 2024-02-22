@@ -36,3 +36,14 @@ func ValidateAndBuildPageRequest(c *gin.Context) (request *PageRequest, err erro
 
 	return
 }
+
+func GetQueryPathID(c *gin.Context) (id int, err error) {
+
+	idstr := c.Param("id")
+	id, err = strconv.Atoi(idstr)
+	if err != nil {
+		log.Printf("user login error: %v", err)
+		return 0, err
+	}
+	return
+}

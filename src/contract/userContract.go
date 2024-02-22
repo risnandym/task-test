@@ -17,6 +17,11 @@ type RegisterInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type UpdateInput struct {
+	Email string `json:"email" binding:"required"`
+	Name  string `json:"name" binding:"required"`
+}
+
 type RegisterOutput struct {
 	ID        int       `json:"id"`
 	Email     string    `json:"email"`
@@ -33,6 +38,19 @@ func ValidateAndBuildUserRegister(c *gin.Context) (request RegisterInput, err er
 }
 
 func ValidateAndBuildUserLogin(c *gin.Context) (request LoginInput, err error) {
+	if err = c.ShouldBindJSON(&request); err != nil {
+		return
+	}
+	return
+}
+
+func ValidateAndBuildUpdateUser(c *gin.Context) (id int, request UpdateInput, err error) {
+
+	id, err = GetQueryPathID(c)
+	if err != nil {
+		return
+	}
+
 	if err = c.ShouldBindJSON(&request); err != nil {
 		return
 	}

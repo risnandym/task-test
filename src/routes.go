@@ -28,19 +28,18 @@ func SetupRouter(app *Dependency) *gin.Engine {
 	user.POST("/", handlers.Register(app.Services.UserSVC))
 
 	user.Use(middlewares.PublicMiddleware(app.Services.UserSVC))
-	user.GET("/", handlers.GetList(app.Services.UserSVC))
-	user.GET("/:id", handlers.Get(app.Services.UserSVC))
-	// user.PUT("/:id", handlers.Update(app.Services.UserSVC))
-	// user.DELETE("/:id", handlers.Delete(app.Services.UserSVC))
+	user.GET("/", handlers.GetListUser(app.Services.UserSVC))
+	user.GET("/:id", handlers.GetUser(app.Services.UserSVC))
+	user.PUT("/:id", handlers.UpdateUser(app.Services.UserSVC))
+	user.DELETE("/:id", handlers.DeleteUser(app.Services.UserSVC))
 
 	task := base.Group("/tasks")
 	task.Use(middlewares.PublicMiddleware(app.Services.UserSVC))
 	task.POST("/", handlers.CreateTask(app.Services.TaskSVC))
-	// task.GET("/", handlers.GetList(app.Services.TaskSVC))
-
-	// task.GET("/:id", handlers.Get(app.Services.TaskSVC))
-	// task.PUT("/:id", handlers.Update(app.Services.TaskSVC))
-	// task.DELETE("/:id", handlers.Delete(app.Services.TaskSVC))
+	task.GET("/", handlers.GetListTask(app.Services.TaskSVC))
+	task.GET("/:id", handlers.GetTask(app.Services.TaskSVC))
+	task.PUT("/:id", handlers.UpdateTask(app.Services.TaskSVC))
+	task.DELETE("/:id", handlers.DeleteTask(app.Services.TaskSVC))
 
 	return r
 }

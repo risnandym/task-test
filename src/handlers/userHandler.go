@@ -84,7 +84,7 @@ func Register(svc UserService) gin.HandlerFunc {
 //	@Produce		json
 //	@Success		200	{object}	map[string]interface{}
 //	@Router			/task-test/users [get]
-func GetList(svc UserService) gin.HandlerFunc {
+func GetListUser(svc UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		request, err := contract.ValidateAndBuildPageRequest(c)
@@ -113,7 +113,7 @@ func GetList(svc UserService) gin.HandlerFunc {
 //	@Produce		json
 //	@Success		200	{object}	map[string]interface{}
 //	@Router			/task-test/users/{id} [get]
-func Get(svc UserService) gin.HandlerFunc {
+func GetUser(svc UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		request, err := contract.GetQueryPathID(c)
@@ -129,5 +129,64 @@ func Get(svc UserService) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "registration success", "data": response})
+	}
+}
+
+// UpdateUser godoc
+//
+//	@Summary		Update User.
+//	@Description	Edit User User.
+//	@Tags			User
+//	@Param			id		path	int						true	"task id"
+//	@Param			Body	body	contract.UpdateInput	true	"the body to create a new User"
+//	@Security		task-token
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/task-test/users/{id} [put]
+func UpdateUser(svc UserService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		id, request, err := contract.ValidateAndBuildUpdateUser(c)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		response, err := svc.Update(id, request)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": response})
+	}
+}
+
+// DeleteUser godoc
+//
+//	@Summary		Delete a User.
+//	@Description	remove a task.
+//	@Tags			User
+//	@Security		task-token
+//	@Param			id	path	int	true	"task id"
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/task-test/users/{id} [delete]
+func DeleteUser(svc UserService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		request, err := contract.GetQueryPathID(c)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		err = svc.Delete(request)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "delete success"})
 	}
 }

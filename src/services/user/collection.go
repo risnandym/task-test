@@ -20,4 +20,6 @@ type UserRepository interface {
 	Login(username string, password string) (token string, err error)
 	Get(id int) (response entities.User, err error)
 	GetList(request *contract.PageRequest) (response []entities.User, err error)
+	Update(request *entities.User) (response *entities.User, err error)
+	Delete(id int) (err error)
 }

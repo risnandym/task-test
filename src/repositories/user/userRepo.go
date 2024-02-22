@@ -68,6 +68,7 @@ func (u UserRepository) Get(id int) (response entities.User, err error) {
 	result := u.db.First(&response, "id = ?", id)
 	if result.Error != nil {
 		log.Printf("get user error: %v", err)
+		err = result.Error
 		return
 	}
 
@@ -80,6 +81,35 @@ func (u UserRepository) GetList(request *contract.PageRequest) (response []entit
 	result := u.db.Offset(offset).Limit(request.Limit).Find(&response)
 	if result.Error != nil {
 		log.Printf("get user list error: %v", err)
+		err = result.Error
+		return
+	}
+
+	return
+}
+
+func (u UserRepository) Update(request *entities.User) (response *entities.User, err error) {
+
+	request.UpdatedAt = time.Now()
+
+	result := u.db.Save(&request)
+	if result.Error != nil {
+		log.Printf("update user error: %v", err)
+		err = result.Error
+		return
+	}
+
+	response = request
+
+	return
+}
+
+func (u UserRepository) Delete(id int) (err error) {
+
+	result := u.db.Delete(&entities.User{}, id)
+	if result.Error != nil {
+		log.Printf("update user error: %v", err)
+		err = result.Error
 		return
 	}
 

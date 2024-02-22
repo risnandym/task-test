@@ -2,7 +2,6 @@ package contract
 
 import (
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -35,13 +34,17 @@ func ValidateAndBuildTaskInput(c *gin.Context) (request TaskInput, err error) {
 	return
 }
 
-func GetQueryPathID(c *gin.Context) (id int, err error) {
+func ValidateAndBuildUpdateTask(c *gin.Context) (id int, request TaskInput, err error) {
 
-	idstr := c.Param("id")
-	id, err = strconv.Atoi(idstr)
+	id, err = GetQueryPathID(c)
 	if err != nil {
-		log.Printf("user login error: %v", err)
-		return 0, err
+		return
 	}
+
+	request, err = ValidateAndBuildTaskInput(c)
+	if err != nil {
+		return
+	}
+
 	return
 }

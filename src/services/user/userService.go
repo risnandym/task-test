@@ -20,8 +20,9 @@ func (u UserService) Create(request contract.RegisterInput) (response *contract.
 	}
 
 	response = &contract.RegisterOutput{}
-	response.Email = result.Email
+	response.ID = result.ID
 	response.Name = result.Name
+	response.Email = result.Email
 	response.CreatedAt = result.CreatedAt
 	response.UpdatedAt = result.UpdatedAt
 
@@ -63,6 +64,7 @@ func (u UserService) GetList(request *contract.PageRequest) (response []contract
 
 	response = stream.Map(stream.OfSlice(users), func(item entities.User) contract.RegisterOutput {
 		return contract.RegisterOutput{
+			ID:        item.ID,
 			Email:     item.Email,
 			Name:      item.Name,
 			CreatedAt: item.CreatedAt,
@@ -71,4 +73,36 @@ func (u UserService) GetList(request *contract.PageRequest) (response []contract
 	}).ToSlice()
 
 	return
+}
+
+func (u UserService) Update(id int, request contract.UpdateInput) (response *contract.RegisterOutput, err error) {
+
+	result, err := u.userRepo.Get(id)
+	if err != nil {
+		return
+	}
+
+	user := &entities.User{
+		ID:    result.ID,
+		Name:  request.Name,
+		Email: request.Email,
+	}
+
+	user, err = u.userRepo.Update(user)
+	if err != nil {
+		return
+	}
+
+	response = &contract.RegisterOutput{}
+	response.ID = user.ID
+	response.Email = user.Email
+	response.Name = user.Name
+	response.CreatedAt = user.CreatedAt
+	response.UpdatedAt = user.UpdatedAt
+
+	return
+}
+
+func (u UserService) Delete(id int) (err error) {
+	return u.userRepo.Delete(id)
 }
