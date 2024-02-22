@@ -18,6 +18,6 @@ func NewUserService(userRepo UserRepository) *UserService {
 type UserRepository interface {
 	Create(request entities.User) (response *entities.User, err error)
 	Login(username string, password string) (token string, err error)
-	Get(id uint) (response entities.User, err error)
+	Get(id int) (response entities.User, err error)
 	GetList(request *contract.PageRequest) (response []entities.User, err error)
 }

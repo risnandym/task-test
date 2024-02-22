@@ -102,3 +102,32 @@ func GetList(svc UserService) gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "registration success", "data": response})
 	}
 }
+
+// Get godoc
+//
+//	@Summary		Get  User.
+//	@Description	get a user from public access.
+//	@Tags			User
+//	@Security		task-token
+//	@Param			id	path	int	true	"user id"
+//	@Produce		json
+//	@Success		200	{object}	map[string]interface{}
+//	@Router			/task-test/users/{id} [get]
+func Get(svc UserService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		request, err := contract.GetQueryPathID(c)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		response, err := svc.Get(request)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "registration success", "data": response})
+	}
+}

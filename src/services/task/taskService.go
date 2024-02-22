@@ -5,19 +5,19 @@ import (
 	"task-test/src/entities"
 )
 
-func (p TaskService) Create(request contract.TaskInput) (response *contract.TaskOutput, err error) {
+func (p TaskService) Create(request contract.TaskInput) (response *entities.Task, err error) {
 
 	task := &entities.Task{
-		UserID: int(request.UserID),
+		UserID:      request.UserID,
+		Title:       request.Title,
+		Description: request.Description,
+		Status:      request.Status,
 	}
 
-	_, err = p.taskRepo.Create(task)
+	response, err = p.taskRepo.Create(task)
 	if err != nil {
 		return
 	}
 
-	response = &contract.TaskOutput{
-		TaskInput: request,
-	}
 	return
 }

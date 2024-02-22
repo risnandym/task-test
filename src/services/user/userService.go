@@ -38,13 +38,14 @@ func (u UserService) Login(request contract.LoginInput) (token string, err error
 	return
 }
 
-func (u UserService) Get(id uint) (response *contract.RegisterOutput, err error) {
+func (u UserService) Get(id int) (response *contract.RegisterOutput, err error) {
 	result, err := u.userRepo.Get(id)
 	if err != nil {
 		return nil, err
 	}
 
 	response = &contract.RegisterOutput{}
+	response.ID = result.ID
 	response.Email = result.Email
 	response.Name = result.Name
 	response.CreatedAt = result.CreatedAt

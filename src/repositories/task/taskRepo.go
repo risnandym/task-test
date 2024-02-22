@@ -25,5 +25,7 @@ func (t TaskRepository) Create(request *entities.Task) (response *entities.Task,
 		return
 	}
 
+	response = request
+
 	return
 }

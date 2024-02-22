@@ -18,8 +18,9 @@ type RegisterInput struct {
 }
 
 type RegisterOutput struct {
-	Email     string    `gorm:"not null;unique" json:"email"`
-	Name      string    `gorm:"not null;" json:"name"`
+	ID        int       `json:"id"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -1,36 +1,47 @@
 package contract
 
 import (
-	"task-test/src/entities"
+	"log"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 type TaskInput struct {
-	UserID       int       `json:"user_id,omitempty"`
-	NIK          string    `json:"nik" validate:"required"`
-	FullName     string    `json:"full_name" validate:"required"`
-	LegalName    string    `json:"legal_name" validate:"required"`
-	PlaceOfBirth string    `json:"place_of_birth" validate:"required"`
-	DateOfBirth  time.Time `json:"date_of_birth" validate:"required"`
-	Salary       float64   `json:"salary" validate:"required"`
-	KtpImage     string    `json:"ktp_image" validate:"required"`
-	SelfieImage  string    `json:"selfie_image" validate:"required"`
+	UserID      int    `json:"user_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
 }
 
 type TaskOutput struct {
 	TaskInput
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func ValidateAndBuildTaskInput(c *gin.Context) (request TaskInput, err error) {
 	userctx, _ := c.Get("user")
-	user := userctx.(entities.User)
+	user := userctx.(*RegisterOutput)
 
 	if err = c.ShouldBindJSON(&request); err != nil {
 		return
 	}
 
+	log.Println(user.ID)
+
 	request.UserID = user.ID
+	return
+}
+
+func GetQueryPathID(c *gin.Context) (id int, err error) {
+
+	idstr := c.Param("id")
+	id, err = strconv.Atoi(idstr)
+	if err != nil {
+		log.Printf("user login error: %v", err)
+		return 0, err
+	}
 	return
 }

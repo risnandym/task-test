@@ -63,7 +63,7 @@ func (u UserRepository) Login(email string, password string) (token string, err 
 	return token, nil
 }
 
-func (u UserRepository) Get(id uint) (response entities.User, err error) {
+func (u UserRepository) Get(id int) (response entities.User, err error) {
 
 	result := u.db.First(&response, "id = ?", id)
 	if result.Error != nil {

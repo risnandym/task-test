@@ -24,63 +24,29 @@ definitions:
     type: object
   contract.TaskInput:
     properties:
-      date_of_birth:
+      description:
         type: string
-      full_name:
+      status:
         type: string
-      ktp_image:
-        type: string
-      legal_name:
-        type: string
-      nik:
-        type: string
-      place_of_birth:
-        type: string
-      salary:
-        type: number
-      selfie_image:
+      title:
         type: string
       user_id:
         type: integer
-    required:
-    - date_of_birth
-    - full_name
-    - ktp_image
-    - legal_name
-    - nik
-    - place_of_birth
-    - salary
-    - selfie_image
     type: object
   contract.TaskOutput:
     properties:
-      date_of_birth:
+      created_at:
         type: string
-      full_name:
+      description:
         type: string
-      ktp_image:
+      status:
         type: string
-      legal_name:
+      title:
         type: string
-      nik:
-        type: string
-      place_of_birth:
-        type: string
-      salary:
-        type: number
-      selfie_image:
+      updated_at:
         type: string
       user_id:
         type: integer
-    required:
-    - date_of_birth
-    - full_name
-    - ktp_image
-    - legal_name
-    - nik
-    - place_of_birth
-    - salary
-    - selfie_image
     type: object
 info:
   contact:
@@ -181,6 +147,28 @@ paths:
             additionalProperties: true
             type: object
       summary: Register a User.
+      tags:
+      - User
+  /task-test/users/{id}:
+    get:
+      description: get a user from public access.
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - task-token: []
+      summary: Get  User.
       tags:
       - User
 securityDefinitions:

@@ -161,6 +161,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/task-test/users/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "task-token": []
+                    }
+                ],
+                "description": "get a user from public access.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get  User.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -200,39 +235,14 @@ const docTemplate = `{
         },
         "contract.TaskInput": {
             "type": "object",
-            "required": [
-                "date_of_birth",
-                "full_name",
-                "ktp_image",
-                "legal_name",
-                "nik",
-                "place_of_birth",
-                "salary",
-                "selfie_image"
-            ],
             "properties": {
-                "date_of_birth": {
+                "description": {
                     "type": "string"
                 },
-                "full_name": {
+                "status": {
                     "type": "string"
                 },
-                "ktp_image": {
-                    "type": "string"
-                },
-                "legal_name": {
-                    "type": "string"
-                },
-                "nik": {
-                    "type": "string"
-                },
-                "place_of_birth": {
-                    "type": "string"
-                },
-                "salary": {
-                    "type": "number"
-                },
-                "selfie_image": {
+                "title": {
                     "type": "string"
                 },
                 "user_id": {
@@ -242,39 +252,20 @@ const docTemplate = `{
         },
         "contract.TaskOutput": {
             "type": "object",
-            "required": [
-                "date_of_birth",
-                "full_name",
-                "ktp_image",
-                "legal_name",
-                "nik",
-                "place_of_birth",
-                "salary",
-                "selfie_image"
-            ],
             "properties": {
-                "date_of_birth": {
+                "created_at": {
                     "type": "string"
                 },
-                "full_name": {
+                "description": {
                     "type": "string"
                 },
-                "ktp_image": {
+                "status": {
                     "type": "string"
                 },
-                "legal_name": {
+                "title": {
                     "type": "string"
                 },
-                "nik": {
-                    "type": "string"
-                },
-                "place_of_birth": {
-                    "type": "string"
-                },
-                "salary": {
-                    "type": "number"
-                },
-                "selfie_image": {
+                "updated_at": {
                     "type": "string"
                 },
                 "user_id": {
